@@ -8,15 +8,27 @@ const launch = {
 	rocket: "Explorer IS1",
 	launchDate: new Date("April 3,2024"),
 	target:"kepler-442 b",
-	customer: ['NigerSpace','Baykar'],
+	customers: ['NigerSpace'],
 	upcoming:true,
 	success:true
 }
 
 launches.set(launch.flightNumber,launch)
 
+function existLaunchWithId(LaunchId){
+ return launches.has(LaunchId)
+}
+
 function getAllLaunches(){
 	return Array.from(launches.values())
+}
+
+
+function abortLaunchById(launchId){
+ const aborted = launches.get(launchId)
+ aborted.upcoming=false
+ aborted.success=false
+ return aborted
 }
 
 function addNewLaunch(launch){
@@ -30,6 +42,8 @@ function addNewLaunch(launch){
 }
 
 module.exports = {
+	existLaunchWithId,
 	getAllLaunches,
 	addNewLaunch,
+	abortLaunchById,
 }
