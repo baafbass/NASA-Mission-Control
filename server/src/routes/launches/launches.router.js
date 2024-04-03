@@ -1,5 +1,4 @@
 const express = require('express')
-
 const {getAllLaunches} = require('./launches.controller.js')
 
 const launchesRouter = express.Router()
