@@ -11,10 +11,18 @@ describe("Test GET / launches",()=>{
 })
 
 describe("Test POST / launch",()=>{
-	test('Test it should respond with 200 success',()=>{
-
+	test('Test it should respond with 201 success',async ()=>{
+		const response = await request(app)
+		.post('/launches')
+		.send({
+			mission:"Niger Aero",
+			target:"kepler-186 f",
+			rocket:"NCC 1701-D",
+			launchDate:"January 23,2025"
+		})
+		.expect('Content-Type',/json/)
+		.expect(201)
 	})
-
 	test("It should catch missing required properties",()=>{})
 	test("It should catch invalid dates",()=>{})
 })
