@@ -8,7 +8,7 @@
     "test": "jest",
     "test-watch": "jest --watch",
     "start": "node src/server.js",
-    "cluster":"pm2 start src/server.js -i max"
+    "cluster": "pm2 start src/server.js -i max"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
     "cors": "^2.8.5",
     "csv-parse": "^5.5.5",
     "express": "^4.19.2",
+    "mongoose": "^8.3.0",
     "morgan": "^1.10.0",
     "pm2": "^5.3.1"
   },
