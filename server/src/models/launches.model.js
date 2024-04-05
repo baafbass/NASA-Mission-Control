@@ -1,4 +1,5 @@
 const launchesDatabase = require('./launches.mongo')
+const planets = require('./planets.mongo')
 
 //const launches = new Map();
 
@@ -9,7 +10,7 @@ const launch = {
 	mission: "Kepler Exploration X",
 	rocket: "Explorer IS1",
 	launchDate: new Date("April 3,2024"),
-	target:"kepler-442 b",
+	target:"Kepler-442 b",
 	customers: ['NigerSpace'],
 	upcoming:true,
 	success:true
@@ -27,6 +28,15 @@ async function getAllLaunches(){
 }
 
 async function saveLaunch(launch){
+    
+    const planet = await planets.findOne({
+    	keplerName: launch.target,
+    })
+
+   if(!planet){
+   	throw new Error('No Matching Planet Found');
+   }
+
 	await launchesDatabase.updateOne({
 		flightNumber: launch.flightNumber,
 	},launch,{upsert:true})
