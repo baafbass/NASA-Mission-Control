@@ -23,7 +23,7 @@ function loadPlanetsData() {
       .on('data', async (data) => {
         if (isHabitablePlanet(data)) {
           //TODO: Replace bellow create with insert + update = upsert
-          
+
           // await planets.create({
           //   keplerName:data.kepler_name,
           // });
@@ -40,8 +40,8 @@ function loadPlanetsData() {
   });
 }
 
-function getAllPlanets(){
-  return habitablePlanets;
+async function getAllPlanets(){
+  return await planets.find();
 }
 
 module.exports = {
