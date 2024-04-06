@@ -1,11 +1,9 @@
 const launchesDatabase = require('./launches.mongo')
 const planets = require('./planets.mongo')
 
-//const launches = new Map();
-
 const DEFAULT_FLIGTH_NUMBER=100;
 
-let lastFlightNumber = 100;
+//let lastFlightNumber = 100;
 
 const launch = {
 	flightNumber:100,
@@ -19,7 +17,7 @@ const launch = {
 }
 
 saveLaunch(launch)
-//launches.set(launch.flightNumber,launch)
+
 
 function existLaunchWithId(LaunchId){
  return launches.has(LaunchId)
@@ -35,7 +33,8 @@ async function saveLaunch(launch){
     	keplerName: launch.target,
     })
 
-   if(!planet){
+   if(!planet)
+   {
    	throw new Error('No Matching Planet Found');
    }
 
@@ -49,7 +48,7 @@ async function getLastestFlightNumber(){
 	.findOne()
 	.sort('-flightNumber')
 
-	if(!LastestLaunch){
+	if(!lastestLaunch){
 		return DEFAULT_FLIGTH_NUMBER;
 	}
 
@@ -63,19 +62,22 @@ function abortLaunchById(launchId){
  return aborted
 }
 
-function addNewLaunch(launch){
-	 lastFlightNumber++;
-	 launches.set(lastFlightNumber,Object.assign(launch,{
-	 success:true,
-	 upcoming:true,
-	 customer: ['Niger Aerospace','Baykar'],
-     flightNumber:lastFlightNumber,
-	}))
+async function scheduleNewLaunch(launch){
+	const newLaunchFlightNumber = await getLastestFlightNumber() + 1;
+
+	const newLaunch = Object.assign(launch,{
+		upcoming:true,
+		success:true,
+        customers: ['Niger Aerospace','Baykar'],
+        flightNumber:newLaunchFlightNumber
+	})
+
+	await saveLaunch(newLaunch);
 }
 
 module.exports = {
 	existLaunchWithId,
 	getAllLaunches,
-	addNewLaunch,
+	scheduleNewLaunch,
 	abortLaunchById,
 }
