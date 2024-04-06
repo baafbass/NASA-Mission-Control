@@ -3,8 +3,6 @@ const planets = require('./planets.mongo')
 
 const DEFAULT_FLIGTH_NUMBER=100;
 
-//let lastFlightNumber = 100;
-
 const launch = {
 	flightNumber:100,
 	mission: "Kepler Exploration X",
@@ -19,8 +17,10 @@ const launch = {
 saveLaunch(launch)
 
 
-function existLaunchWithId(LaunchId){
- return launches.has(LaunchId)
+async function existLaunchWithId(LaunchId){
+ return await launchesDatabase.findOne({
+ 	flightNumber:LaunchId,
+ })
 }
 
 async function getAllLaunches(){
@@ -38,7 +38,7 @@ async function saveLaunch(launch){
    	throw new Error('No Matching Planet Found');
    }
 
-	await launchesDatabase.updateOne({
+	await launchesDatabase.findOneAndUpdate({
 		flightNumber: launch.flightNumber,
 	},launch,{upsert:true})
 }
@@ -55,11 +55,15 @@ async function getLastestFlightNumber(){
 	return lastestLaunch.flightNumber;
 }
 
-function abortLaunchById(launchId){
- const aborted = launches.get(launchId)
- aborted.upcoming=false
- aborted.success=false
- return aborted
+async function abortLaunchById(launchId){
+	const aborted = await launchesDatabase.updateOne({
+		flightNumber:launchId,
+	},{
+		upcoming:false,
+		success:false,
+	})
+
+    return aborted.modifiedCount === 1;
 }
 
 async function scheduleNewLaunch(launch){
