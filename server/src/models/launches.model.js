@@ -25,6 +25,7 @@ async function loadLaunchData(){
 	const response = await axios.post('https://api.spacexdata.com/v5/launches/query',{
     query:{},
     options:{
+    	pagination:false,
         populate:[
           {
               path:'rocket',
