@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const MONGO_URL = 'mongodb+srv://nasa-api:BAAF-bass662932@nasacluster.haj5dyw.mongodb.net/nasa?retryWrites=true&w=majority&appName=NASACluster'
+const MONGO_URL = process.env.MONGO_URL
 
 mongoose.connection.once('open',()=>{
 	console.log('MongoDb Connection Ready');
