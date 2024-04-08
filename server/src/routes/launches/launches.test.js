@@ -1,5 +1,16 @@
 const request = require('supertest')
 const app = require('../../app.js')
+const {mongoConnect,mongoDisconnect} = require('../../services/mongo')
+
+describe("Launches API",()=>{
+
+beforeAll(async ()=>{
+	await mongoConnect();
+})
+
+afterAll(async ()=>{
+	await mongoDisconnect();
+})
 
 describe("Test GET / launches",()=>{
 	test("It Should respond with 200 success",async ()=>{
@@ -14,20 +25,20 @@ describe("Test POST / launch",()=>{
 	
 	const completeLaunchData = {
 			mission:"Niger Aero",
-			target:"kepler-186 f",
+			target:"Kepler-62 f",
 			rocket:"NCC 1701-D",
 			launchDate:"January 23,2025"
 		}
 
 	const launchDataWithoutDate = {
 			mission:"Niger Aero",
-			target:"kepler-186 f",
+			target:"Kepler-62 f",
 			rocket:"NCC 1701-D"
 		}
 
 	const launchDataWithoutInvalidDate = {
 		    mission:"Niger Aero",
-			target:"kepler-186 f",
+			target:"Kepler-62 f",
 			rocket:"NCC 1701-D",
 			launchDate:"Abdoul Farid"
 	}
@@ -70,3 +81,5 @@ describe("Test POST / launch",()=>{
 		})
 	})
 })
+})
+
