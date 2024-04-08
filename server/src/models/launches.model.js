@@ -1,21 +1,50 @@
+const axios = require('axios')
+
 const launchesDatabase = require('./launches.mongo')
 const planets = require('./planets.mongo')
 
 const DEFAULT_FLIGTH_NUMBER=100;
 
 const launch = {
-	flightNumber:100,
-	mission: "Kepler Exploration X",
-	rocket: "Explorer IS1",
-	launchDate: new Date("April 3,2024"),
-	target:"Kepler-442 b",
-	customers: ['NigerSpace'],
-	upcoming:true,
-	success:true
+	flightNumber:100, // flight_number
+	mission: "Kepler Exploration X", //name
+	rocket: "Explorer IS1", // rocket.name
+	launchDate: new Date("April 3,2024"), // date_local
+	target:"Kepler-442 b", // not applicable
+	customers: ['NigerSpace'], // payloads.customers
+	upcoming:true,//upcoming
+	success:true// success
 }
 
 saveLaunch(launch)
 
+const SPACEX_API_URL = 'https://api.spacexdata.com/v5/launches/query'
+
+async function loadLaunchData(){
+	console.log("Downloading data from SpaceX....")
+	const response = await axios.post('https://api.spacexdata.com/v5/launches/query',{
+    query:{},
+    options:{
+        populate:[
+          {
+              path:'rocket',
+              select:{
+                  name:1
+              }
+          },
+          {
+          	path:'payloads',
+          	select:{
+          		'customers':1
+          	}
+          }
+        ]
+    }
+})
+
+
+	
+}
 
 async function existLaunchWithId(LaunchId){
  return await launchesDatabase.findOne({
@@ -80,6 +109,7 @@ async function scheduleNewLaunch(launch){
 }
 
 module.exports = {
+	loadLaunchData,
 	existLaunchWithId,
 	getAllLaunches,
 	scheduleNewLaunch,
