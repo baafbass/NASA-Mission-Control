@@ -14,4 +14,5 @@ jobs:
         with:
           node-version: '20'
       - run: npm install
-      - run: npm run build --prefix client   
+      - run: npm install --save-dev @babel/plugin-proposal-private-property-in-object
+      - run: npm run build --prefix client
